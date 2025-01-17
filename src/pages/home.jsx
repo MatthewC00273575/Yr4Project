@@ -1,31 +1,37 @@
-import React, { useRef } from "react";
-import { firestore } from "../firebase";
-import { addDoc, collection } from "@firebase/firestore";
+import React from "react";
+import { NavLink, Outlet } from "react-router-dom";
 
-export default function Home(){
-    const messageRef = useRef();
-    const ref = collection(firestore, "messages");
+const Home = () => {
+  return (
+    <div className="home-layout">
+      {/* Sidebar */}
+      <aside className="sidebar">
+        <h1 className="sidebar-title">myFi</h1>
+        <nav className="menu">
+          <NavLink to="/dashboard" className="menu-item">
+            Dashboard
+          </NavLink>
+          <NavLink to="/csvUpload" className="menu-item">
+            CSV Upload
+          </NavLink>
+          <NavLink to="/reports" className="menu-item">
+            Reports
+          </NavLink>
+          <NavLink to="/budgets" className="menu-item">
+            Budgets
+          </NavLink>
+          <NavLink to="/settings" className="menu-item">
+            Settings
+          </NavLink>
+        </nav>
+      </aside>
 
-    const handleSave = async(e) =>{
-        e.preventDefault();
-        console.log(messageRef.current.value);
-
-        let data = {
-            message:messageRef.current.value,
-        }
-
-        try {
-            addDoc(ref,data);
-        } catch (e) {
-            console.log(e);
-        }
-    };
-
-    return <div>
-        <form onSubmit={handleSave}>
-            <label>Enter Message</label>
-            <input type="type" ref={messageRef}/>
-            <button type="submit">save</button>
-        </form>
+      {/* Main Content */}
+      <main className="main-content">
+        <Outlet />
+      </main>
     </div>
-}
+  );
+};
+
+export default Home;
